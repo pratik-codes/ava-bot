@@ -23,7 +23,7 @@ export default function ChatBot() {
     },
   ]);
   const [input, setInput] = useState("");
-  const scrollRef = useRef<any>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {

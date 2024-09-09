@@ -17,4 +17,4 @@ init_routes(app)
 if __name__ == '__main__':
     debug_mode = os.getenv("DEBUG_MODE") == "True"
     port = int(os.getenv("PORT", 4000))
-    app.run(debug=debug_mode, port=port)
+    app.run(debug=debug_mode, host="0.0.0.0", port=port)

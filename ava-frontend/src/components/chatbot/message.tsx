@@ -8,7 +8,21 @@ import {
 import { Button } from "../ui/button";
 import { MoreVertical } from "lucide-react";
 
-const Message = ({ message, handleEdit, handleDelete }) => {
+interface MessageProps {
+  message: {
+    id: number;
+    sender: string;
+    content: string;
+  };
+  handleEdit: (id: number) => void;
+  handleDelete: (id: number) => void;
+}
+
+const Message: React.FC<MessageProps> = ({
+  message,
+  handleEdit,
+  handleDelete,
+}) => {
   return (
     <div
       key={message.id}

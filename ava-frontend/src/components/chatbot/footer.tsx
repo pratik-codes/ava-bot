@@ -9,7 +9,13 @@ import {
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-const Footer = ({ input, setInput, handleSend }) => {
+interface FooterProps {
+  input: string;
+  setInput: (value: string) => void;
+  handleSend: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ input, setInput, handleSend }) => {
   return (
     <div className="w-full my-2">
       <div className="flex flex-col space-y-2">

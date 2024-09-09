@@ -2,7 +2,11 @@ import { Maximize2, PanelLeftDashed, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-const Header = ({ setIsOpen }) => {
+interface HeaderProps {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header: React.FC<HeaderProps> = ({ setIsOpen }) => {
   return (
     <>
       <div className="flex flex-col justify-center items-center space-y-2 mt-6">
@@ -11,7 +15,7 @@ const Header = ({ setIsOpen }) => {
           <AvatarFallback>AVA</AvatarFallback>
         </Avatar>
         <div className="text-center space-y-1">
-          <h4 className="text-sm font-semibold">Hey👋, I'm Ava</h4>
+          <h4 className="text-sm font-semibold">Hey👋, {"I'm Ava"}</h4>
           <p className="text-xs text-muted-foreground">
             Ask me anything or pick a place to start
           </p>
