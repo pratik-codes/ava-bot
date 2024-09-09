@@ -6,7 +6,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Clock, Home, MessageSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import Header from "./header";
 import Footer from "./footer";
 import { SendMsgApiCall } from "@/lib/api";
