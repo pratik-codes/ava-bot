@@ -12,15 +12,23 @@ import Footer from "./footer";
 import { SendMsgApiCall } from "@/lib/api";
 import Message from "./message";
 
+interface Message {
+  id: number;
+  sender: "bot" | "user";
+  content: string;
+  prompts?: Array<string>;
+}
+
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [fetchingResponse, setFetchingResponse] = useState(false);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
       sender: "bot",
       content: "Hi there,\n what can I help you with today?",
+      prompts: ["Create Report this month", "Call Lead"],
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -39,7 +47,7 @@ export default function ChatBot() {
     const lastMessageResponse = await SendMsgApiCall(input);
     console.log({ lastMessageResponse });
     if (lastMessageResponse?.error) {
-      setMessages((prev) => [
+      setMessages((prev: Message[]) => [
         ...prev,
         {
           id: Date.now() + 1,
@@ -62,15 +70,20 @@ export default function ChatBot() {
     ]);
   };
 
-  const handleSend = async () => {
-    if (input.trim()) {
+  const handleSend = async (msg = "") => {
+    const message = input.trim() || msg;
+    if (message.trim()) {
       setMessages((prev) => [
         ...prev,
-        { id: Date.now(), sender: "user", content: input },
+        { id: Date.now(), sender: "user", content: message },
       ]);
       setInput("");
-      await handleResponse(input);
+      await handleResponse(message);
     }
+  };
+
+  const handlePrompts = (message: string) => {
+    handleSend(message);
   };
 
   const handleEdit = (id: number) => {
@@ -104,6 +117,7 @@ export default function ChatBot() {
               <ScrollArea ref={scrollRef} className="h-full pr-4">
                 {messages.map((message) => (
                   <Message
+                    handlePrompts={handlePrompts}
                     key={message.id}
                     message={message}
                     handleEdit={handleEdit}
@@ -112,6 +126,7 @@ export default function ChatBot() {
                 ))}
                 {fetchingResponse && (
                   <Message
+                    handlePrompts={handlePrompts}
                     handleEdit={handleEdit}
                     handleDelete={handleDelete}
                     message={{
