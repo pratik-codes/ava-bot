@@ -1,18 +1,17 @@
 import os
 from flask import Flask
-from routes import init_routes
 from dotenv import load_dotenv
 from flask_cors import CORS
+from routes import AvaChatBot
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Initialize the Flask app
 app = Flask(__name__)
-cors = CORS(app, resources={r"/chat": {"origins": "*"}})
 
-# Initialize routes
-init_routes(app)
+# Initialize AvaChatBot with the app
+AvaChatBot(app)
 
 if __name__ == '__main__':
     debug_mode = os.getenv("DEBUG_MODE") == "True"

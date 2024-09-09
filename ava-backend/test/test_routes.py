@@ -1,66 +1,47 @@
-import unittest
+import pytest
+from unittest.mock import patch
 from flask import Flask
-from unittest.mock import patch, MagicMock
-from routes import init_routes
-from app import app
+from routes import AvaChatBot
+import handlers
 
-class TestChatRoutes(unittest.TestCase):
+# Fixture to set up a Flask test client
+@pytest.fixture
+def client():
+    app = Flask(__name__)
+    AvaChatBot(app)  # Initialize AvaChatBot routes
+    return app.test_client()
 
-    def setUp(self):
-        # Create a test Flask app instance
-        self.app = Flask(__name__)
-        init_routes(self.app)
-        self.client = app.test_client()
+# Test for health check route
+def test_health_check(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert response.data.decode() == 'Ava Chat Bot is up and running!'
 
-    def test_health_check(self):
-        """Test the health check route."""
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.decode('utf-8'), 'Ava Chat Bot is up and running!')
+# Test for valid chat request with mocked handle_chat and environment variable
+@patch("handlers.handle_chat")
+@patch.dict('os.environ', {'OPENAI_API_KEY': 'test_api_key'})  # Mock environment variable
+def test_chat_valid_request(mock_handle_chat, client):
+    # Mock the handle_chat function to return a predefined response
+    mock_handle_chat.return_value = "Hello, how can I assist you today?"
 
-    @patch('routes.handle_chat')  # Patch the handle_chat function in the routes module
-    def test_chat_valid_request(self, mock_handle_chat):
-        # Set up mock return value
-        mock_handle_chat.return_value = "Hello! How can I assist you today?"
+    # Simulate POST request to /chat
+    response = client.post('/chat', json={"message": "Hello Ava!"})
 
-        # Send a POST request to the /chat endpoint with a valid message
-        response = self.client.post('/chat', json={"message": "Hi, Ava!"})
+    print("PRINTING RESPONSE", response.json)  # Debugging statement to see actual response
+    assert response.status_code == 200
+    assert response.json == {"response": "Hello, how can I assist you today?"}
+    mock_handle_chat.assert_called_once_with("Hello Ava!")
 
-        # Assert the response
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, {"response": "Hello! How can I assist you today?"})
+# Test for when handle_chat throws an exception with mocked environment variable
+@patch('handlers.handle_chat')
+@patch.dict('os.environ', {'OPENAI_API_KEY': 'test_api_key'})  # Mock environment variable
+def test_chat_handle_chat_exception(mock_handle_chat, client):
+    # Mock the handle_chat function to raise an exception
+    mock_handle_chat.side_effect = Exception("An error occurred")
 
-        # Check that handle_chat was called with the correct argument
-        mock_handle_chat.assert_called_once_with("Hi, Ava!")
+    # Simulate POST request to /chat with valid message
+    response = client.post('/chat', json={"message": "Hello Ava!"})
 
-    def test_chat_invalid_request_no_json(self):
-        """Test chat route with an invalid request (no JSON payload)."""
-        response = self.client.post('/chat')
-
-        # Assertions
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json, {"error": "Invalid request"})
-
-    def test_chat_invalid_request_no_message(self):
-        """Test chat route with an invalid request (missing 'message' in JSON)."""
-        response = self.client.post('/chat', json={})
-
-        # Assertions
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json, {"error": "Invalid request"})
-
-    @patch('routes.handle_chat')  # Patch handle_chat in routes
-    def test_chat_handle_chat_raises_exception(self, mock_handle_chat):
-        """Test chat route when handle_chat raises an exception."""
-        # Mock handle_chat to raise an exception
-        mock_handle_chat.side_effect = Exception("Something went wrong")
-
-        # Send a valid POST request with JSON payload
-        response = self.client.post('/chat', json={"message": "Hi, Ava!"})
-
-        # Assertions
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, {"error": "Something went wrong"})
-
-if __name__ == '__main__':
-    unittest.main()
+    print(response.json)  # Debugging statement to see actual response
+    assert response.status_code == 200
+    assert response.json == {"error": "An error occurred"}

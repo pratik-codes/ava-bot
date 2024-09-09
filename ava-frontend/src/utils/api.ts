@@ -8,10 +8,8 @@ export const SendMsgApiCall = async (msg: string) => {
         message: msg,
       },
     );
-    console.log({ response });
     return response.data.response;
   } catch (error) {
-    console.error({ error });
     return error;
   }
 };

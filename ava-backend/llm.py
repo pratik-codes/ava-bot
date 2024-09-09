@@ -1,6 +1,6 @@
-from openai import OpenAI
 import os
 from abc import ABC, abstractmethod
+import openai
 
 
 class LLMClient(ABC):
@@ -11,7 +11,7 @@ class LLMClient(ABC):
 
 class OpenAIClient(LLMClient):
     def __init__(self, api_key: str):
-        self.client = OpenAI(
+        self.client = openai.OpenAI(
             # This is the default and can be omitted
             api_key=os.environ.get("OPENAI_API_KEY"),
         )

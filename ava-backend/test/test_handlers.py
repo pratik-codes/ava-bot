@@ -1,48 +1,51 @@
-import unittest
-from unittest.mock import patch, MagicMock
-from handlers import handle_chat
-import llm as LLM
+import pytest
+from unittest.mock import patch, Mock
+import llm
+import handlers
 
-class TestHandleChat(unittest.TestCase):
-    @patch('LLM.OpenAIClient')
-    def test_handle_chat_valid_response(self, MockOpenAIClient):
-        # Create a mock response object
-        mock_response = MagicMock()
-        mock_response.choices = [
-            MagicMock(
-                message=MagicMock(content="Hello! How can I assist you today?")
-            )
-        ]
+# Test for valid chat request
+@patch("llm.OpenAIClient")  # Mock the OpenAIClient
+@patch.dict('os.environ', {'SYSTEM_PROMPT': 'test_system_prompt'})  # Mock environment variable
+def test_handle_chat_valid_request(mock_openai_client):
+    # Create a mock OpenAIClient instance
+    mock_client_instance = Mock()
+    mock_openai_client.return_value = mock_client_instance
 
-        # Set up the mock OpenAIClient
-        mock_client = MockOpenAIClient.return_value
-        mock_client.generate_response.return_value = "Hello! How can I assist you today?"
+    # Mock the generate_response method
+    mock_client_instance.generate_response.return_value = "This is a response."
 
-        # Call the function with a sample user message
-        response = handle_chat("Hi, Ava!")
+    # Call handle_chat function
+    response = handlers.handle_chat("Hello Ava!")
 
-        # Assertions
-        mock_client.generate_response.assert_called_once_with(
-            user_message="Hi, Ava!",
-            system_message="You are Ava, an AI assistant."
-        )
-        self.assertEqual(response, "Hello! How can I assist you today?")
+    # Assert the response from handle_chat
+    assert response == "This is a response."
 
-    @patch('LLM.OpenAIClient')
-    def test_handle_chat_client_exception(self, MockOpenAIClient):
-        # Mock generate_response to raise an exception
-        mock_client = MockOpenAIClient.return_value
-        mock_client.generate_response.side_effect = Exception("Something went wrong")
+    # Assert that OpenAIClient was initialized with the correct API key
+    mock_openai_client.assert_called_once_with(api_key="your_openai_api_key")
 
-        # Call the function with a sample user message
-        response = handle_chat("Hi, Ava!")
+    # Assert that generate_response was called with correct arguments
+    mock_client_instance.generate_response.assert_called_once_with("Hello Ava!", 'test_system_prompt')
 
-        # Assertions
-        mock_client.generate_response.assert_called_once_with(
-            user_message="Hi, Ava!",
-            system_message="You are Ava, an AI assistant."
-        )
-        self.assertEqual(response, "No response generated.")
+# Test for handling exceptions from OpenAIClient
+@patch("llm.OpenAIClient")  # Mock the OpenAIClient
+@patch.dict('os.environ', {'SYSTEM_PROMPT': 'test_system_prompt'})  # Mock environment variable
+def test_handle_chat_exception(mock_openai_client):
+    # Create a mock OpenAIClient instance
+    mock_client_instance = Mock()
+    mock_openai_client.return_value = mock_client_instance
 
-if __name__ == '__main__':
-    unittest.main()
+    # Mock the generate_response method to raise an exception
+    mock_client_instance.generate_response.side_effect = Exception("API error")
+
+    # Call handle_chat function and check for the exception handling
+    with pytest.raises(Exception) as exc_info:
+        handlers.handle_chat("Hello Ava!")
+
+    # Assert the exception message
+    assert str(exc_info.value) == "API error"
+
+    # Assert that OpenAIClient was initialized with the correct API key
+    mock_openai_client.assert_called_once_with(api_key="your_openai_api_key")
+
+    # Assert that generate_response was called with correct arguments
+    mock_client_instance.generate_response.assert_called_once_with("Hello Ava!", 'test_system_prompt')

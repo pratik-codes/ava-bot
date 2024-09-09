@@ -35,7 +35,6 @@ export default function ChatBot() {
 
   useEffect(() => {
     // Scroll to the bottom of the scroll area whenever messages are updated
-    console.log(scrollRef.current, messages);
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
