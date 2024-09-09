@@ -91,13 +91,13 @@ export default function ChatBot() {
   return (
     <div className="fixed bottom-4 right-4">
       <div
-        className={`rounded-2xl mb-12 w-[28rem] h-[50rem] flex flex-col shadow-xl transition-transform duration-300 ease-in-out ${
+        className={`rounded-2xl mb-12 w-[28rem] h-[42rem] flex flex-col shadow-xl transition-transform duration-300 ease-in-out ${
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
         {isOpen && (
           <Card className="flex flex-col h-full">
-            <CardHeader>
+            <CardHeader className="p-2">
               <Header setIsOpen={setIsOpen} />
             </CardHeader>
             <CardContent className="flex-grow overflow-hidden p-4">
