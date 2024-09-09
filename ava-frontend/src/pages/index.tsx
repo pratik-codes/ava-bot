@@ -16,9 +16,6 @@ export default function Home() {
               An <b>AI</b> powered chat bot which helps you with any questions
               you have
             </p>
-            <div className="text-2xl border-gray-700 border-2 px-2 rounded-full">
-              ↘️
-            </div>
           </div>
         </div>
         <ChatBot />
