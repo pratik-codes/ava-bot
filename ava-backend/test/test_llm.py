@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import patch, Mock
 from llm import OpenAIClient
+import constants
 
 # Test for valid response from OpenAIClient
 @patch('openai.OpenAI')  # Mock the OpenAI class
@@ -29,21 +30,21 @@ def test_generate_response_valid(mock_openai):
 
     # Assert that the chat completions create method was called with correct parameters
     mock_create.assert_called_once_with(
-        model="gpt-3.5-turbo",
+        model=constants.MODAL_NAME,
         messages=[
             {"role": "system", "content": "System prompt"},
             {"role": "user", "content": "Hello Ava!"},
         ],
-        max_tokens=150,
-        temperature=0.7,
-        top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0,
+        max_tokens=constants.MAX_TOKENS,
+        temperature=constants.TEMPERATURE,
+        top_p=constants.TOP_P,
+        frequency_penalty=constants.FREQUENCY_PENALTY,
+        presence_penalty=constants.PRESENCE_PENALTY,
     )
 
 # Test for handling empty response
 @patch('openai.OpenAI')  # Mock the OpenAI class
-@patch.dict('os.environ', {'OPENAI_API_KEY': 'test_api_key'})  # Mock environment variable
+@patch.dict('os.environ', {'OPENAI_API_KEY': 'test_api_key'})
 def test_generate_response_no_choices(mock_openai):
     # Create a mock OpenAI instance
     mock_openai_instance = Mock()
@@ -65,7 +66,7 @@ def test_generate_response_no_choices(mock_openai):
 
 # Test for handling exceptions from OpenAIClient
 @patch('openai.OpenAI')  # Mock the OpenAI class
-@patch.dict('os.environ', {'OPENAI_API_KEY': 'test_api_key'})  # Mock environment variable
+@patch.dict('os.environ', {'OPENAI_API_KEY': 'test_api_key'})
 def test_generate_response_exception(mock_openai):
     # Create a mock OpenAI instance
     mock_openai_instance = Mock()

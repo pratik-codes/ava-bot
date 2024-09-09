@@ -1,6 +1,7 @@
 import os
 from abc import ABC, abstractmethod
 import openai
+import constants
 
 
 class LLMClient(ABC):
@@ -18,16 +19,16 @@ class OpenAIClient(LLMClient):
 
     def generate_response(self, user_message: str, system_prompt: str | None) -> str:
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Or "gpt-4" if you have access
+            model=constants.MODAL_NAME,  # Or "gpt-4" if you have access
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},
             ],
-            max_tokens=150,
-            temperature=0.7,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0,
+            max_tokens=constants.MAX_TOKENS,
+            temperature=constants.TEMPERATURE,
+            top_p=constants.TOP_P,
+            frequency_penalty=constants.FREQUENCY_PENALTY,
+            presence_penalty=constants.PRESENCE_PENALTY,
         )
 
         response_content = ""

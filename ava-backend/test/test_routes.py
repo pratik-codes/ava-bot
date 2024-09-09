@@ -27,7 +27,6 @@ def test_chat_valid_request(mock_handle_chat, client):
     # Simulate POST request to /chat
     response = client.post('/chat', json={"message": "Hello Ava!"})
 
-    print("PRINTING RESPONSE", response.json)  # Debugging statement to see actual response
     assert response.status_code == 200
     assert response.json == {"response": "Hello, how can I assist you today?"}
     mock_handle_chat.assert_called_once_with("Hello Ava!")
