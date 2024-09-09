@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare } from "lucide-react";
 import Header from "./header";
 import Footer from "./footer";
-import { SendMsgApiCall } from "@/utils/api";
+import { SendMsgApiCall } from "@/lib/api";
 import Message from "./message";
 
 export default function ChatBot() {

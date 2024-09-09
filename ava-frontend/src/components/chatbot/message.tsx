@@ -37,7 +37,7 @@ const Message: React.FC<MessageProps> = ({
       <div
         className={`rounded-3xl p-3 max-w-[80%] ${message.sender === "user" ? (message.content === "Deleted message" ? "bg-indigo-300 text-primary-foreground" : "bg-indigo-600 text-primary-foreground") : "bg-muted"}`}
       >
-        {message.content.split("\n").map((line, i) => (
+        {message?.content?.split("\n").map((line, i) => (
           <p key={i} className="text-sm">
             {line}
           </p>
