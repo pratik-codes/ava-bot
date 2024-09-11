@@ -12,10 +12,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 interface FooterProps {
   input: string;
   setInput: (value: string) => void;
+  fetchingResponse?: boolean;
   handleSend: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ input, setInput, handleSend }) => {
+const Footer: React.FC<FooterProps> = ({
+  input,
+  setInput,
+  handleSend,
+  fetchingResponse,
+}) => {
   return (
     <div className="w-full my-2">
       <div className="flex flex-col space-y-2">
@@ -62,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({ input, setInput, handleSend }) => {
               </Button>
               <Button
                 onClick={handleSend}
-                disabled={input.length == 0}
+                disabled={input.length == 0 || fetchingResponse}
                 variant="ghost"
                 size="icon"
               >

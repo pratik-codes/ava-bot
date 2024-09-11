@@ -6,7 +6,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, X } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import Header from "./header";
 import Footer from "./footer";
 import { SendMsgApiCall } from "@/lib/api";
@@ -40,7 +40,7 @@ export default function ChatBot() {
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages, fetchingResponse]);
 
   const handleResponse = async (input: string) => {
     setFetchingResponse(true);
@@ -149,6 +149,7 @@ export default function ChatBot() {
                 input={input}
                 setInput={setInput}
                 handleSend={handleSend}
+                fetchingResponse={fetchingResponse}
               />
             </CardFooter>
           </Card>

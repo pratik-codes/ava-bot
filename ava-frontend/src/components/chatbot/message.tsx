@@ -61,7 +61,7 @@ const Message: React.FC<MessageProps> = ({
               </DropdownMenu>
             )}
           <div
-            className={`rounded-3xl p-3 max-w-[80%] ${message.sender === "user" ? (message.content === "Deleted message" ? "bg-indigo-300 text-primary-foreground  rounded-tr-none" : "bg-indigo-600 text-primary-foreground  rounded-tr-none mr-3") : "bg-muted mr-4"}`}
+            className={`rounded-3xl p-3 max-w-[80%] ${message.sender === "user" ? (message.content === "Deleted message" ? "bg-indigo-300 text-primary-foreground rounded-tr-none" : "bg-indigo-600 text-primary-foreground  rounded-tr-none mr-3") : "bg-muted mr-4"}`}
           >
             {message?.content?.split("\n").map((line, i) => (
               <p key={i} className="text-sm">
