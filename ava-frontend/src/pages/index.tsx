@@ -1,52 +1,28 @@
-// import { useState, useEffect } from 'react'
-// import { motion } from 'framer-motion'
 import ChatBot from "@/components/chatbot/chatbot";
 import TechCard from "@/components/home/tech-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageSquare, Server, Cpu } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
-  // const [isLoaded, setIsLoaded] = useState(false)
-
-  // useEffect(() => {
-  //   setIsLoaded(true)
-  // }, [])
-
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-      <div
-        // initial={{ opacity: 0, y: -20 }}
-        // animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
-        // transition={{ duration: 0.5 }}
-        className="text-center mb-12"
-      >
-        <div
-          className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          // whileHover={{ scale: 1.05 }}
-        >
-          <Avatar className="w-32 h-32 mb-2 border-2 bg-indigo-500 border-indigo-300">
+      <div className="text-center mb-12">
+        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Avatar className="w-24 h-24 md:w-32 md:h-32 mt-4 md:mb-8 border-2 bg-indigo-500 border-indigo-300">
             <AvatarImage src="https://www.artisan.co/_next/image?url=%2Fassets%2Fhome%2Fava%2Fava.webp&w=384&q=100" />
             <AvatarFallback>AVA</AvatarFallback>
           </Avatar>
         </div>
+
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Chat with Ava</h1>
+
         <p className="text-xl text-gray-600">
           AI-powered assistance for your questions
         </p>
       </div>
 
-      <div
-      // initial={{ opacity: 0, scale: 0.95 }}
-      // animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 0.95 }}
-      // transition={{ duration: 0.5, delay: 0.2 }}
-      ></div>
-
-      <div
-        // initial={{ opacity: 0, y: 20 }}
-        // animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
-        // transition={{ duration: 0.5, delay: 0.4 }}
-        className="mt-16 w-full max-w-3xl"
-      >
+      <div className="w-full max-w-3xl">
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           Our Tech Stack
         </h2>
@@ -70,7 +46,20 @@ export default function Home() {
       </div>
 
       <footer className="mt-16 text-gray-500 text-sm">
-        Made with care by Pratik · Hosted on Vercel · Open source on GitHub
+        Made with care by{" "}
+        <Link
+          className="hover:underline hover:text-black hover:font-bold"
+          href="tiwaripratik.com"
+        >
+          Pratik
+        </Link>{" "}
+        · Hosted on Vercel · Open source on{" "}
+        <Link
+          className="hover:underline hover:text-black hover:font-bold"
+          href="https://github.com/pratik-codes/ava-bot"
+        >
+          GitHub
+        </Link>{" "}
       </footer>
 
       <ChatBot />

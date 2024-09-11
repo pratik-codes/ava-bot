@@ -33,7 +33,7 @@ const Message: React.FC<MessageProps> = ({
         className={`flex mb-2 ${message.sender === "user" ? "justify-end" : "justify-start"}`}
       >
         {message.sender === "bot" && (
-          <Avatar className="w-8 h-8 mr-2">
+          <Avatar className="w-8 h-8 mr-2 bg-indigo-500 border-none">
             <AvatarImage src="https://www.artisan.co/_next/image?url=%2Fassets%2Fhome%2Fava%2Fava.webp&w=384&q=100" />
             <AvatarFallback>AVA</AvatarFallback>
           </Avatar>

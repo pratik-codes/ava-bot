@@ -6,7 +6,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, X } from "lucide-react";
 import Header from "./header";
 import Footer from "./footer";
 import { SendMsgApiCall } from "@/lib/api";
@@ -102,15 +102,21 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4">
+    <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8">
       <div
-        className={`rounded-2xl mb-12 w-[28rem] h-[42rem] flex flex-col shadow-xl transition-transform duration-300 ease-in-out ${
-          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+        className={`rounded-lg sm:rounded-2xl w-full h-full sm:w-[90vw] sm:h-[90vh] md:w-[28rem] md:h-[42rem] max-w-[28rem] max-h-[42rem] flex flex-col shadow-xl transition-all duration-300 ease-in-out ${
+          isOpen
+            ? "scale-100 opacity-100"
+            : "scale-95 opacity-0 pointer-events-none"
+        } ${
+          isOpen
+            ? "fixed inset-0 sm:relative sm:inset-auto"
+            : "absolute bottom-0 right-0"
         }`}
       >
         {isOpen && (
           <Card className="flex flex-col h-full">
-            <CardHeader className="p-2">
+            <CardHeader className="p-2 flex justify-between items-center">
               <Header setIsOpen={setIsOpen} />
             </CardHeader>
             <CardContent className="flex-grow overflow-hidden p-4">
@@ -152,7 +158,7 @@ export default function ChatBot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="absolute bottom-0 right-0 rounded-full border-black p-4 bg-black text-white hover:bg-gray-600 transition-colors"
+          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 rounded-full border-black p-4 text-white bg-indigo-500 hover:bg-indigo-600 transition-colors"
         >
           <MessageSquare className="font-bold" />
         </button>

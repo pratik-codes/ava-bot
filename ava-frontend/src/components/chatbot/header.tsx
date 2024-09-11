@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = ({ setIsOpen }) => {
   return (
     <>
       <div className="flex flex-col justify-center items-center space-y-2 mt-6">
-        <Avatar>
+        <Avatar className="bg-indigo-400 border-none">
           <AvatarImage src="https://www.artisan.co/_next/image?url=%2Fassets%2Fhome%2Fava%2Fava.webp&w=384&q=100" />
           <AvatarFallback>AVA</AvatarFallback>
         </Avatar>

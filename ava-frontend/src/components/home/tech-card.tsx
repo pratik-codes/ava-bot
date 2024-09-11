@@ -22,7 +22,7 @@ function TechCard({ icon, title, techs }: TechCardProps) {
               variant="secondary"
               className="bg-gray-100 text-gray-800"
             >
-              {tech}
+              {tech} {tech === "LangChain" ? "(In Progress)" : ""}
             </Badge>
           ))}
         </div>
